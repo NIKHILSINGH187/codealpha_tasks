@@ -18,7 +18,7 @@ CodeAlpha is a software development company offering internship programs across 
 
 ## Author
 
-Add your name here.
+Nikhil Singh
 
 ## Disclaimer
 
