@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phishing Field Guide — CodeAlpha Cyber Security Training</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root{
+    --navy: #0F1B2D;
+    --navy-light: #17273D;
+    --paper: #F7F5F0;
+    --paper-dim: #ECE8DF;
+    --ink: #1A2332;
+    --slate: #5C6773;
+    --amber: #E8A33D;
+    --amber-dim: #C9862B;
+    --steel: #3D5A73;
+    --danger: #B5462E;
+    --ok: #3E7A5C;
+    --line: rgba(15,27,45,0.14);
+    --line-onNavy: rgba(247,245,240,0.16);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.55;
+  }
+  h1,h2,h3{
+    font-family:'Source Serif 4',serif;
+    font-weight:600;
+    margin:0 0 0.4em 0;
+    color:var(--ink);
+  }
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  a{color:inherit;}
+  p{margin:0 0 1em 0; max-width:62ch;}
+  section{padding:64px 24px;}
+  .wrap{max-width:900px; margin:0 auto;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:var(--navy);
+    color:var(--paper);
+    padding:90px 24px 70px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero .tag{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:13px;
+    color:var(--amber);
+    letter-spacing:0.02em;
+    margin-bottom:18px;
+    display:block;
+  }
+  .hero h1{
+    color:var(--paper);
+    font-size:clamp(34px,5vw,54px);
+    line-height:1.08;
+    max-width:14ch;
+    margin-bottom:20px;
+  }
+  .hero p{
+    color:#C9D2DC;
+    font-size:17px;
+    max-width:56ch;
+  }
+  .hero-stats{
+    display:flex;
+    gap:40px;
+    margin-top:44px;
+    flex-wrap:wrap;
+    border-top:1px solid var(--line-onNavy);
+    padding-top:28px;
+  }
+  .stat .num{
+    font-family:'Source Serif 4',serif;
+    font-size:34px;
+    color:var(--amber);
+    line-height:1;
+  }
+  .stat .label{
+    font-size:13px;
+    color:#9FADBB;
+    margin-top:6px;
+    max-width:20ch;
+  }
+
+  /* ---------- SECTION HEADERS ---------- */
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    margin-bottom:28px;
+    border-bottom:2px solid var(--ink);
+    padding-bottom:14px;
+  }
+  .section-head .idx{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:14px;
+    color:var(--steel);
+  }
+  .section-head h2{font-size:28px;}
+
+  /* ---------- TACTICS GRID ---------- */
+  .tactics{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(240px,1fr));
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    margin-top:8px;
+  }
+  .tactic{
+    background:var(--paper);
+    padding:22px;
+  }
+  .tactic h3{
+    font-size:17px;
+    margin-bottom:8px;
+  }
+  .tactic p{font-size:14.5px; color:var(--slate); margin:0;}
+
+  /* ---------- ANNOTATED EMAIL ---------- */
+  .email-mock{
+    border:1px solid var(--line);
+    background:#fff;
+    box-shadow:0 1px 0 var(--line);
+    margin:28px 0;
+  }
+  .email-head{
+    padding:16px 20px;
+    border-bottom:1px solid var(--line);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:13.5px;
+    color:var(--slate);
+  }
+  .email-head .row{display:flex; gap:10px; margin-bottom:4px;}
+  .email-head .row span:first-child{width:56px; color:var(--slate); flex-shrink:0;}
+  .email-head .flag{color:var(--danger); font-weight:500;}
+  .email-body{padding:22px 20px; font-size:15px;}
+  .email-body .flag-inline{
+    background:rgba(181,70,46,0.12);
+    border-bottom:2px solid var(--danger);
+    padding:1px 2px;
+  }
+  .callouts{
+    list-style:none;
+    margin:20px 0 0;
+    padding:0;
+    display:grid;
+    gap:10px;
+  }
+  .callouts li{
+    display:flex;
+    gap:12px;
+    font-size:14.5px;
+    color:var(--ink);
+  }
+  .callouts .n{
+    font-family:'IBM Plex Mono',monospace;
+    color:#fff;
+    background:var(--danger);
+    width:22px; height:22px;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:12px;
+    flex-shrink:0;
+  }
+
+  /* ---------- CHECKLIST ---------- */
+  .checklist{list-style:none; margin:0; padding:0;}
+  .checklist li{
+    display:flex;
+    gap:14px;
+    padding:14px 0;
+    border-bottom:1px solid var(--line);
+    font-size:15.5px;
+  }
+  .checklist li:last-child{border-bottom:none;}
+  .checklist .mark{
+    font-family:'IBM Plex Mono',monospace;
+    color:var(--ok);
+    flex-shrink:0;
+  }
+
+  /* ---------- CASE FILES ---------- */
+  .case{
+    border-left:3px solid var(--steel);
+    padding:4px 0 4px 20px;
+    margin-bottom:26px;
+  }
+  .case h3{font-size:17px; margin-bottom:6px;}
+  .case p{font-size:14.5px; color:var(--slate); margin:0;}
+  .case .kind{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:var(--steel);
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+    display:block;
+    margin-bottom:6px;
+  }
+
+  /* ---------- QUIZ ---------- */
+  .quiz-section{background:var(--navy); color:var(--paper);}
+  .quiz-section .section-head{border-bottom:2px solid var(--line-onNavy);}
+  .quiz-section .section-head h2{color:var(--paper);}
+  .quiz-section .idx{color:var(--amber);}
+  .quiz-card{
+    background:var(--navy-light);
+    border:1px solid var(--line-onNavy);
+    padding:28px;
+    margin-bottom:20px;
+  }
+  .quiz-card .q{
+    font-family:'Source Serif 4',serif;
+    font-size:19px;
+    margin-bottom:16px;
+  }
+  .options{display:grid; gap:10px;}
+  .opt{
+    text-align:left;
+    background:transparent;
+    border:1px solid var(--line-onNavy);
+    color:var(--paper);
+    padding:12px 16px;
+    font-family:'Inter',sans-serif;
+    font-size:14.5px;
+    border-radius:2px;
+    cursor:pointer;
+    transition:border-color 0.15s ease, background 0.15s ease;
+  }
+  .opt:hover{border-color:var(--amber);}
+  .opt.correct{background:rgba(62,122,92,0.25); border-color:var(--ok);}
+  .opt.incorrect{background:rgba(181,70,46,0.25); border-color:var(--danger);}
+  .opt[disabled]{cursor:default;}
+  .explain{
+    margin-top:14px;
+    font-size:13.5px;
+    color:#B9C4CF;
+    display:none;
+    border-top:1px solid var(--line-onNavy);
+    padding-top:12px;
+  }
+  .quiz-footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:10px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:14px;
+  }
+  #score{color:var(--amber);}
+  #resetBtn{
+    background:none;
+    border:1px solid var(--line-onNavy);
+    color:var(--paper);
+    padding:8px 16px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:13px;
+    cursor:pointer;
+  }
+  #resetBtn:hover{border-color:var(--amber); color:var(--amber);}
+
+  footer{
+    padding:32px 24px 50px;
+    text-align:center;
+    font-size:13px;
+    color:var(--slate);
+  }
+
+  @media (max-width:600px){
+    section{padding:48px 20px;}
+    .hero{padding:64px 20px 50px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="tag">CODEALPHA CYBER SECURITY INTERNSHIP — TASK 2</span>
+    <h1>Recognize it before it reaches you.</h1>
+    <p>Phishing is the most common way attackers get into an organization — not through a firewall, but through an inbox. This guide walks through how phishing works, what it looks like, and how to catch it before you click.</p>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="num">91%</div>
+        <div class="label">of cyberattacks start with a phishing email</div>
+      </div>
+      <div class="stat">
+        <div class="num">3 sec</div>
+        <div class="label">average time someone takes to decide whether to click a link</div>
+      </div>
+      <div class="stat">
+        <div class="num">1 in 4</div>
+        <div class="label">phishing emails still get past spam filters</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="what-is">
+  <div class="wrap">
+    <div class="section-head"><span class="idx">01</span><h2>What phishing actually is</h2></div>
+    <p>Phishing is an attempt to trick someone into handing over information — a password, a card number, access to a system — by pretending to be someone trustworthy. It relies on impersonation and psychology, not on breaking encryption or exploiting software.</p>
+    <div class="tactics">
+      <div class="tactic">
+        <h3>Email phishing</h3>
+        <p>Mass emails impersonating a bank, vendor, or internal team, aimed at whoever happens to click.</p>
+      </div>
+      <div class="tactic">
+        <h3>Spear phishing</h3>
+        <p>Targeted at one person, using real details about them (name, role, recent activity) to seem credible.</p>
+      </div>
+      <div class="tactic">
+        <h3>Whaling</h3>
+        <p>Spear phishing aimed at executives or finance staff, often impersonating a CEO requesting a wire transfer.</p>
+      </div>
+      <div class="tactic">
+        <h3>Smishing / Vishing</h3>
+        <p>The same tactic delivered by text message or phone call instead of email.</p>
+      </div>
+      <div class="tactic">
+        <h3>Clone phishing</h3>
+        <p>A copy of a real, previously-sent email with the links or attachments swapped for malicious ones.</p>
+      </div>
+      <div class="tactic">
+        <h3>Angler phishing</h3>
+        <p>Fake customer-support accounts on social media that "help" you by asking for login details.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="anatomy" style="background:var(--paper-dim);">
+  <div class="wrap">
+    <div class="section-head"><span class="idx">02</span><h2>Anatomy of a phishing email</h2></div>
+    <p>Most phishing emails share the same handful of tells. Here's a typical one, annotated.</p>
+
+    <div class="email-mock">
+      <div class="email-head">
+        <div class="row"><span>From</span><span class="flag">"IT Support" &lt;it-support@paypa1-security.com&gt;</span></div>
+        <div class="row"><span>To</span><span>you@yourcompany.com</span></div>
+        <div class="row"><span>Subject</span><span class="flag">URGENT: Your account will be suspended in 24 hours</span></div>
+      </div>
+      <div class="email-body">
+        <p><span class="flag-inline">Dear Valued Customer,</span></p>
+        <p>We have detected unusual activity on your account. <span class="flag-inline">You must verify your identity within 24 hours or your account will be permanently suspended.</span></p>
+        <p>Click the link below to confirm your details immediately:</p>
+        <p><span class="flag-inline">http://paypal-account-verify.secure-loginhelp.com/confirm</span></p>
+        <p>Thank you for your promptly attention to this matter.</p>
+      </div>
+    </div>
+
+    <ul class="callouts">
+      <li><span class="n">1</span> Sender domain is misspelled ("paypa1" with the numeral 1) and unrelated to the real company.</li>
+      <li><span class="n">2</span> Generic greeting instead of your actual name — legitimate services you have an account with usually address you by name.</li>
+      <li><span class="n">3</span> Manufactured urgency and a threat ("24 hours," "suspended") designed to make you act before you think.</li>
+      <li><span class="n">4</span> The link's visible text doesn't match where it actually leads — hovering over it (without clicking) reveals the real destination.</li>
+      <li><span class="n">5</span> Awkward grammar ("promptly attention") — a small tell, but a real one, especially from a company that sends millions of emails.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="tactics">
+  <div class="wrap">
+    <div class="section-head"><span class="idx">03</span><h2>The psychology behind it</h2></div>
+    <p>Phishing works because it targets how people make decisions under pressure, not technical weaknesses. Attackers lean on a small set of psychological levers, usually more than one at once.</p>
+    <div class="tactics">
+      <div class="tactic"><h3>Urgency</h3><p>"Act now or lose access" — pressure to skip verification and act on impulse.</p></div>
+      <div class="tactic"><h3>Authority</h3><p>Impersonating a boss, bank, or government agency so the request feels non-negotiable.</p></div>
+      <div class="tactic"><h3>Fear</h3><p>Threats of account suspension, fines, or legal trouble to provoke a panicked response.</p></div>
+      <div class="tactic"><h3>Curiosity</h3><p>Vague subject lines like "Invoice attached" or "You have a new voicemail" to get the click.</p></div>
+      <div class="tactic"><h3>Trust</h3><p>Spoofed sender names, logos, and formatting that mimic a real, familiar brand or coworker.</p></div>
+      <div class="tactic"><h3>Reciprocity</h3><p>Fake rewards, refunds, or gifts that create a sense of obligation to respond.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="website" style="background:var(--paper-dim);">
+  <div class="wrap">
+    <div class="section-head"><span class="idx">04</span><h2>Spotting a fake website</h2></div>
+    <p>Fake login pages are usually pixel-perfect copies of the real thing. The tell is almost never the design — it's the address bar.</p>
+    <ul class="checklist">
+      <li><span class="mark">→</span> Check the domain carefully — <span class="mono">micros0ft-login.com</span> and <span class="mono">login-microsft.net</span> are not Microsoft.</li>
+      <li><span class="mark">→</span> A padlock icon only means the connection is encrypted — it says nothing about who owns the site. Attackers get padlocks too.</li>
+      <li><span class="mark">→</span> Type the address yourself or use a saved bookmark instead of clicking a link in an email or text.</li>
+      <li><span class="mark">→</span> Be suspicious of login pages reached through a redirect, a QR code, or a shortened URL you can't preview.</li>
+      <li><span class="mark">→</span> If a site asks for more than it should — a password <em>and</em> a card number <em>and</em> a security question — that's a red flag.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="best-practices">
+  <div class="wrap">
+    <div class="section-head"><span class="idx">05</span><h2>Best practices</h2></div>
+    <ul class="checklist">
+      <li><span class="mark">01</span> Pause before clicking anything urgent — attackers are counting on speed, not accuracy.</li>
+      <li><span class="mark">02</span> Verify unusual requests (wire transfers, password resets, gift-card purchases) through a separate channel — call the person, don't reply to the email.</li>
+      <li><span class="mark">03</span> Hover over links to preview the real URL before clicking.</li>
+      <li><span class="mark">04</span> Enable multi-factor authentication everywhere it's offered, so a stolen password alone isn't enough.</li>
+      <li><span class="mark">05</span> Never enter credentials on a page you reached by clicking a link — navigate there directly instead.</li>
+      <li><span class="mark">06</span> Report suspicious emails to your IT/security team instead of just deleting them — one report can protect the whole organization.</li>
+      <li><span class="mark">07</span> Keep software and browsers updated — some phishing pages exploit outdated software after the initial click.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="cases" style="background:var(--paper-dim);">
+  <div class="wrap">
+    <div class="section-head"><span class="idx">06</span><h2>Real-world patterns</h2></div>
+    <div class="case">
+      <span class="kind">Case pattern — Business Email Compromise</span>
+      <h3>The fake CEO wire transfer</h3>
+      <p>An attacker registers a domain one character off from a real company's, then emails someone in finance impersonating the CEO, urgently requesting a wire transfer while "in a meeting." These scams have collectively cost businesses billions of dollars and typically succeed by combining authority and urgency with a request that seems routine.</p>
+    </div>
+    <div class="case">
+      <span class="kind">Case pattern — Credential harvesting worm</span>
+      <h3>The fake shared document</h3>
+      <p>A message claims a colleague shared a document and links to a login page that looks identical to a real file-sharing or email provider. Anyone who signs in hands over their credentials, and their account is then used to send the same message to their contacts — letting it spread on its own.</p>
+    </div>
+    <div class="case">
+      <span class="kind">Case pattern — Delivery/package scam</span>
+      <h3>The fake missed delivery</h3>
+      <p>A text or email claims a package couldn't be delivered and asks for a small "redelivery fee," collecting card details on a convincing but fake courier website. It works because it references something plausible and mundane rather than anything that would raise suspicion.</p>
+    </div>
+  </div>
+</section>
+
+<section class="quiz-section" id="quiz">
+  <div class="wrap">
+    <div class="section-head"><span class="idx">07</span><h2>Quick check</h2></div>
+    <p style="color:#B9C4CF;">Five questions. Pick an answer to see whether it's right, and why.</p>
+    <div id="quizContainer"></div>
+    <div class="quiz-footer">
+      <span>Score: <span id="score">0</span> / <span id="total">0</span></span>
+      <button id="resetBtn">Reset quiz</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Built for the CodeAlpha Cyber Security Internship — Task 2: Phishing Awareness Training
+</footer>
+
+<script>
+const questions = [
+  {
+    q: "An email from \"support@amaz0n-orders.com\" says your order is on hold and asks you to confirm your payment details. What's the biggest red flag?",
+    options: [
+      "The email has a subject line at all",
+      "The sender domain uses a zero instead of the letter 'o' and isn't Amazon's real domain",
+      "It mentions an order",
+      "It was sent in the morning"
+    ],
+    correct: 1,
+    explain: "Lookalike domains (amaz0n instead of amazon) are one of the most common phishing techniques — always check the actual domain, not just the display name."
+  },
+  {
+    q: "You get a text saying you've won a gift card and just need to click a link to claim it. What should you do?",
+    options: [
+      "Click it quickly before the offer expires",
+      "Forward it to friends so they can claim one too",
+      "Ignore or delete it — unsolicited prize messages are a classic phishing/smishing tactic",
+      "Reply with your name to confirm you're the right person"
+    ],
+    correct: 2,
+    explain: "Unexpected prizes are a reciprocity/curiosity lure. Legitimate contests don't need you to click a link to 'unlock' a prize you didn't know you entered."
+  },
+  {
+    q: "What does the padlock icon in a browser's address bar actually guarantee?",
+    options: [
+      "The website is legitimate and safe",
+      "The connection between you and the site is encrypted — nothing about who owns the site",
+      "The site has been verified by your antivirus",
+      "The site cannot contain phishing forms"
+    ],
+    correct: 1,
+    explain: "HTTPS/padlocks only mean the traffic is encrypted in transit. Attackers can and do get valid certificates for fake sites — the padlock says nothing about trustworthiness."
+  },
+  {
+    q: "Your \"CEO\" emails you directly asking you to urgently buy $500 in gift cards and send the codes. What's the best response?",
+    options: [
+      "Buy them immediately since it's the CEO and it's urgent",
+      "Reply to the email asking for more details",
+      "Verify the request through a separate, known channel (call or message them directly) before doing anything",
+      "Forward it to a coworker to decide"
+    ],
+    correct: 2,
+    explain: "This is a classic whaling/BEC scam. Urgent, unusual financial requests — especially gift cards, which are untraceable — should always be verified out-of-band, never confirmed by replying to the same email."
+  },
+  {
+    q: "A phishing email is best defined as one that primarily relies on:",
+    options: [
+      "Breaking encryption to steal data in transit",
+      "Exploiting a software bug in your email client",
+      "Impersonation and psychological pressure to get you to act",
+      "Guessing your password through brute force"
+    ],
+    correct: 2,
+    explain: "Phishing is fundamentally a social engineering attack — it targets human judgment and trust, not a technical vulnerability."
+  }
+];
+
+let score = 0;
+let answered = new Array(questions.length).fill(false);
+
+function renderQuiz(){
+  const container = document.getElementById('quizContainer');
+  container.innerHTML = '';
+  questions.forEach((item, qi) => {
+    const card = document.createElement('div');
+    card.className = 'quiz-card';
+
+    const qEl = document.createElement('div');
+    qEl.className = 'q';
+    qEl.textContent = `${qi+1}. ${item.q}`;
+    card.appendChild(qEl);
+
+    const optsEl = document.createElement('div');
+    optsEl.className = 'options';
+
+    item.options.forEach((optText, oi) => {
+      const btn = document.createElement('button');
+      btn.className = 'opt';
+      btn.textContent = optText;
+      btn.addEventListener('click', () => handleAnswer(qi, oi, card));
+      optsEl.appendChild(btn);
+    });
+
+    card.appendChild(optsEl);
+
+    const explainEl = document.createElement('div');
+    explainEl.className = 'explain';
+    explainEl.textContent = item.explain;
+    card.appendChild(explainEl);
+
+    container.appendChild(card);
+  });
+  document.getElementById('total').textContent = questions.length;
+  document.getElementById('score').textContent = score;
+}
+
+function handleAnswer(qIndex, optIndex, card){
+  if (answered[qIndex]) return;
+  answered[qIndex] = true;
+
+  const buttons = card.querySelectorAll('.opt');
+  buttons.forEach((b, i) => {
+    b.disabled = true;
+    if (i === questions[qIndex].correct){
+      b.classList.add('correct');
+    } else if (i === optIndex){
+      b.classList.add('incorrect');
+    }
+  });
+
+  if (optIndex === questions[qIndex].correct){
+    score++;
+    document.getElementById('score').textContent = score;
+  }
+
+  card.querySelector('.explain').style.display = 'block';
+}
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+  score = 0;
+  answered = new Array(questions.length).fill(false);
+  renderQuiz();
+});
+
+renderQuiz();
+</script>
+
+</body>
+</html>
